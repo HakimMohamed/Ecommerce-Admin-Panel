@@ -1,13 +1,7 @@
 "use client";
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  Badge,
-  BoxIcon,
-  GroupIcon,
-} from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, BoxIcon, GroupIcon } from "lucide-react";
 import React from "react";
-
+import { Chip } from "@heroui/chip";
 export const EcommerceMetrics = () => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
@@ -26,10 +20,9 @@ export const EcommerceMetrics = () => {
               3,782
             </h4>
           </div>
-          <Badge color="success">
-            <ArrowUpIcon />
+          <Chip color="success" startContent={<ArrowUpIcon />}>
             11.01%
-          </Badge>
+          </Chip>
         </div>
       </div>
       {/* <!-- Metric Item End --> */}
@@ -49,12 +42,12 @@ export const EcommerceMetrics = () => {
             </h4>
           </div>
 
-          <Badge color="error">
-            <ArrowDownIcon className="text-error-500" />
+          <Chip color="danger" startContent={<ArrowDownIcon />}>
             9.05%
-          </Badge>
+          </Chip>
         </div>
       </div>
+      {/* <!-- Metric Item End --> */}
     </div>
   );
 };

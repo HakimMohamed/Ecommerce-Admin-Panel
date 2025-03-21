@@ -8,6 +8,7 @@ import { Input } from "@heroui/input";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 import { SearchIcon } from "@/components/icons";
+import UserDropdown from "./ui/UserDropdown";
 
 export const AppNavbar = () => {
   const searchInput = (
@@ -34,6 +35,7 @@ export const AppNavbar = () => {
   return (
     <HeroUINavbar maxWidth="full" position="sticky" isBordered>
       {searchInput}
+      <UserDropdown />
       <NavbarContent
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
