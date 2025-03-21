@@ -46,9 +46,9 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="mx-auto flex w-full flex-1 flex-col overflow-hidden rounded-md border md:flex-row dark:border-neutral-700 dark:bg-neutral-800">
-      <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody className="flex flex-col justify-between gap-10 max-w-3xl">
+    <div className="mx-auto flex w-full flex-1 flex-col md:flex-row overflow-hidden rounded-md border dark:border-neutral-700 dark:bg-neutral-800">
+      <Sidebar open={open} setOpen={setOpen} animate={false}>
+        <SidebarBody className="flex flex-col justify-between gap-10">
           <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
             <Logo />
             <div className="mt-8 flex flex-col gap-2">
@@ -76,7 +76,10 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
           </div>
         </SidebarBody>
       </Sidebar>
-      <div className="">{children}</div>
+
+      <div className="flex flex-1 items-start justify-center h-screen p-4">
+        <div>{children}</div>
+      </div>
     </div>
   );
 }
