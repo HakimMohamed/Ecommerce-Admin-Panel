@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import { motion } from "motion/react";
 import Image from "next/image";
+import { AppNavbar } from "../navbar";
 
 export function AppSidebar({ children }: { children: React.ReactNode }) {
   const links = [
@@ -46,9 +47,10 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="mx-auto flex w-full flex-1 flex-col md:flex-row overflow-hidden rounded-md border dark:border-neutral-700 dark:bg-neutral-800">
+    <div className="flex w-full min-h-screen">
+      {/* Sidebar (fixed width) */}
       <Sidebar open={open} setOpen={setOpen} animate={false}>
-        <SidebarBody className="flex flex-col justify-between gap-10">
+        <SidebarBody className="flex flex-col justify-between gap-10 w-full">
           <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
             <Logo />
             <div className="mt-8 flex flex-col gap-2">
@@ -77,12 +79,17 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
         </SidebarBody>
       </Sidebar>
 
-      <div className="flex flex-1 items-start justify-center h-screen p-4">
-        <div>{children}</div>
+      <div className="flex flex-1 flex-col w-full min-h-screen">
+        <AppNavbar />
+
+        <div className="flex flex-1 items-start justify-center p-6">
+          <div className="w-full max-w-4xl">{children}</div>
+        </div>
       </div>
     </div>
   );
 }
+
 export const Logo = () => {
   return (
     <Link
