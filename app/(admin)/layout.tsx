@@ -15,7 +15,9 @@ export default function DashboardLayout({
       {/* Main Content */}
       <div className="flex flex-col flex-grow">
         <AppNavbar />
-        <main className="p-6">{children}</main>
+        <main className="p-6 flex flex-col justify-center items-center">
+          {children}
+        </main>
       </div>
     </div>
   );
