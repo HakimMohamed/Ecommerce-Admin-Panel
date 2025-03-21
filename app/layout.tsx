@@ -6,7 +6,6 @@ import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
-import { AppSidebar } from "@/components/layout/AppSidebar";
 
 export const metadata: Metadata = {
   title: {
@@ -40,9 +39,7 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="h-screen flex">
-            <AppSidebar>{children}</AppSidebar>
-          </div>
+          <div className="h-screen flex">{children}</div>
         </Providers>
       </body>
     </html>
