@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import Link, { LinkProps } from "next/link";
+import Link from "next/link";
 import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { IconMenu2, IconX } from "@tabler/icons-react";
@@ -153,27 +153,32 @@ export const MobileSidebar = ({
     </>
   );
 };
-
 export const SidebarLink = ({
   link,
+  isActive,
   className,
   ...props
 }: {
   link: Links;
+  isActive?: boolean;
   className?: string;
-  props?: LinkProps;
+  props?: any;
 }) => {
   const { open } = useSidebar();
+
   return (
     <Link
       href={link.href}
       className={cn(
-        "flex items-center justify-start gap-2 group/sidebar py-2",
+        "flex items-center gap-3 p-1 h-10 rounded-md transition-all",
+        isActive
+          ? "bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-white"
+          : "hover:bg-gray-100 dark:hover:bg-gray-700",
         className
       )}
       {...props}
     >
-      {link.icon}
+      <div className="flex-shrink-0">{link.icon}</div>
 
       <div
         className="overflow-hidden transition-all duration-300"

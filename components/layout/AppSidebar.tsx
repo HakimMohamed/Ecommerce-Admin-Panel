@@ -1,61 +1,42 @@
 "use client";
 import React, { useState } from "react";
-import {
-  IconArrowLeft,
-  IconBrandTabler,
-  IconSettings,
-  IconUserBolt,
-} from "@tabler/icons-react";
+import { IconArrowLeft, IconSettings } from "@tabler/icons-react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 import { SidebarBody, SidebarLink, Sidebar } from "../third-party/Sidebar";
+import { Activity, ListTree } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export function SidebarDemo() {
-  const links = [
-    {
-      label: "Dashboard",
-      href: "#",
-      icon: (
-        <IconBrandTabler className="h-5 w-5 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
-    {
-      label: "Profile",
-      href: "#",
-      icon: (
-        <IconUserBolt className="h-5 w-5 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
-    {
-      label: "Settings",
-      href: "#",
-      icon: (
-        <IconSettings className="h-5 w-5 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
-    {
-      label: "Logout",
-      href: "#",
-      icon: (
-        <IconArrowLeft className="h-5 w-5 text-neutral-700 dark:text-neutral-200" />
-      ),
-    },
-  ];
-
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  const links = [
+    { label: "Home", href: "/", icon: <Activity className="h-5 w-5" /> },
+    { label: "Items", href: "/items", icon: <ListTree className="h-5 w-5" /> },
+    {
+      label: "Settings",
+      href: "/settings",
+      icon: <IconSettings className="h-5 w-5" />,
+    },
+    { label: "Logout", href: "#", icon: <IconArrowLeft className="h-5 w-5" /> },
+  ];
+
   return (
-    <div className={cn("flex h-screen flex-col border-r")}>
+    <div className="flex h-screen flex-col border-r">
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
-              {links.map((link, idx) => (
-                <SidebarLink key={idx} link={link} />
-              ))}
+              {links.map((link, idx) => {
+                const isActive = pathname === link.href;
+
+                return (
+                  <SidebarLink key={idx} link={link} isActive={isActive} />
+                );
+              })}
             </div>
           </div>
           {/* Profile Link */}
@@ -81,6 +62,7 @@ export function SidebarDemo() {
     </div>
   );
 }
+
 export const Logo = () => {
   return (
     <Link
