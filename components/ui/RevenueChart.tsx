@@ -86,16 +86,11 @@ const RevenueChart = () => {
         </div>
       </Card>
 
-      {/* Today's orders */}
       <Card className=" rounded-lg shadow-md p-4">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-base font-bold text-gray-800 dark:text-white">
-              Today&apos;s Orders
-            </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Hourly breakdown
-            </p>
+            <h2 className="text-base font-bold">Today&apos;s Orders</h2>
+            <p className="text-xs ">Hourly breakdown</p>
           </div>
           <div className="bg-orange-100 dark:bg-orange-900 p-1 rounded-full">
             <Clock className="text-orange-600 dark:text-orange-400" size={16} />
@@ -108,9 +103,7 @@ const RevenueChart = () => {
               <ArrowUp size={12} className="mr-1" />
               8.7%
             </span>
-            <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
-              vs yesterday
-            </span>
+            <span className="text-xs  ml-1">vs yesterday</span>
           </div>
         </div>
         <div className="h-40">

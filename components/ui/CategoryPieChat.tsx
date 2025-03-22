@@ -41,12 +41,8 @@ const CategoryPieChart = () => {
       <Card className="rounded-lg shadow-md p-4">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-base font-bold text-gray-800 dark:text-white">
-              Sales by Category
-            </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Product categories
-            </p>
+            <h2 className="text-base font-bold">Sales by Category</h2>
+            <p className="text-xs">Product categories</p>
           </div>
           <div className="bg-green-100 dark:bg-green-900 p-1 rounded-full">
             <Package className="text-green-600 dark:text-green-400" size={16} />
@@ -96,12 +92,8 @@ const CategoryPieChart = () => {
       <Card className="rounded-lg shadow-md p-4">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-base font-bold text-gray-800 dark:text-white">
-              Conversion Rate
-            </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Visitors vs. purchases
-            </p>
+            <h2 className="text-base font-bold">Conversion Rate</h2>
+            <p className="text-xs">Visitors vs. purchases</p>
           </div>
           <div className="bg-purple-100 dark:bg-purple-900 p-1 rounded-full">
             <ShoppingCart
@@ -117,9 +109,7 @@ const CategoryPieChart = () => {
               <ArrowUp size={12} className="mr-1" />
               0.5%
             </span>
-            <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
-              vs last week
-            </span>
+            <span className="text-xs ml-1">vs last week</span>
           </div>
         </div>
         <div className="h-40">
@@ -160,7 +150,6 @@ const CategoryPieChart = () => {
                 yAxisId="right"
                 type="monotone"
                 dataKey="conversions"
-                stroke="#A855F7"
                 strokeWidth={2}
                 dot={false}
                 name="Orders"

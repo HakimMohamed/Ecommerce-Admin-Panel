@@ -50,12 +50,8 @@ const TopProductsTable = () => {
       <Card className=" rounded-lg shadow-md p-4">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-base font-bold text-gray-800 dark:text-white">
-              Top Products
-            </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Best performers
-            </p>
+            <h2 className="text-base font-bold ">Top Products</h2>
+            <p className="text-xs">Best performers</p>
           </div>
           <div className="bg-blue-100 dark:bg-blue-900 p-1 rounded-full">
             <Activity className="text-blue-600 dark:text-blue-400" size={16} />
@@ -64,27 +60,16 @@ const TopProductsTable = () => {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="text-left border-b border-gray-200 dark:border-gray-700">
-                <th className="pb-2 text-xs font-medium text-gray-500 dark:text-gray-400">
-                  Product
-                </th>
-                <th className="pb-2 text-xs font-medium text-gray-500 dark:text-gray-400">
-                  Sales
-                </th>
-                <th className="pb-2 text-xs font-medium text-gray-500 dark:text-gray-400">
-                  Revenue
-                </th>
-                <th className="pb-2 text-xs font-medium text-gray-500 dark:text-gray-400">
-                  Growth
-                </th>
+              <tr className="text-left border-b ">
+                <th className="pb-2 text-xs font-medium ">Product</th>
+                <th className="pb-2 text-xs font-medium ">Sales</th>
+                <th className="pb-2 text-xs font-medium ">Revenue</th>
+                <th className="pb-2 text-xs font-medium ">Growth</th>
               </tr>
             </thead>
             <tbody>
               {topProducts.map((product) => (
-                <tr
-                  key={product.id}
-                  className="border-b border-gray-100 dark:border-gray-800"
-                >
+                <tr key={product.id} className="border-b ">
                   <td className="py-2 pr-2 text-xs">{product.name}</td>
                   <td className="py-2 pr-2 text-xs">{product.sales}</td>
                   <td className="py-2 pr-2 text-xs">
@@ -113,12 +98,8 @@ const TopProductsTable = () => {
       <Card className=" rounded-lg shadow-md p-4">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-base font-bold text-gray-800 dark:text-white">
-              Top Locations
-            </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Customer cities
-            </p>
+            <h2 className="text-base font-bold">Top Locations</h2>
+            <p className="text-xs ">Customer cities</p>
           </div>
           <div className="bg-green-100 dark:bg-green-900 p-1 rounded-full">
             <Map className="text-green-600 dark:text-green-400" size={16} />
@@ -128,23 +109,14 @@ const TopProductsTable = () => {
           <table className="w-full">
             <thead>
               <tr className="text-left border-b border-gray-200 dark:border-gray-700">
-                <th className="pb-2 text-xs font-medium text-gray-500 dark:text-gray-400">
-                  City
-                </th>
-                <th className="pb-2 text-xs font-medium text-gray-500 dark:text-gray-400">
-                  Customers
-                </th>
-                <th className="pb-2 text-xs font-medium text-gray-500 dark:text-gray-400">
-                  Revenue
-                </th>
+                <th className="pb-2 text-xs font-medium ">City</th>
+                <th className="pb-2 text-xs font-medium ">Customers</th>
+                <th className="pb-2 text-xs font-medium ">Revenue</th>
               </tr>
             </thead>
             <tbody>
               {customerLocations.map((location) => (
-                <tr
-                  key={location.id}
-                  className="border-b border-gray-100 dark:border-gray-800"
-                >
+                <tr key={location.id} className="border-b ">
                   <td className="py-2 pr-2 text-xs">{location.city}</td>
                   <td className="py-2 pr-2 text-xs">
                     {location.customers.toLocaleString()}

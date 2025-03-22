@@ -47,11 +47,7 @@ export function SidebarDemo() {
   const [open, setOpen] = useState(true);
 
   return (
-    <div
-      className={cn(
-        "flex h-screen flex-col border-r border-neutral-200 bg-gray-100 dark:border-neutral-700 dark:bg-neutral-800"
-      )}
-    >
+    <div className={cn("flex h-screen flex-col border-r")}>
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
@@ -63,7 +59,7 @@ export function SidebarDemo() {
             </div>
           </div>
           {/* Profile Link */}
-          <div className="p-4 border-t border-neutral-300 dark:border-neutral-700">
+          <div className="p-4 border-t">
             <SidebarLink
               link={{
                 label: "Manu Arora",
@@ -89,13 +85,13 @@ export const Logo = () => {
   return (
     <Link
       href="#"
-      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
+      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal"
     >
       <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-medium whitespace-pre text-black dark:text-white"
+        className="font-medium whitespace-pre dark:text-white"
       >
         Acet Labs
       </motion.span>
@@ -106,7 +102,7 @@ export const LogoIcon = () => {
   return (
     <Link
       href="#"
-      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
+      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal"
     >
       <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
     </Link>

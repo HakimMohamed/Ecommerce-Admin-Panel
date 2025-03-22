@@ -11,12 +11,8 @@ const EcommerceDashboard = () => {
   return (
     <div className="p-4 w-full flex flex-col gap-6">
       <header>
-        <h1 className="text-xl font-bold text-gray-800 dark:text-white">
-          Ecommerce Analytics
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          Overview of your store&apos;s performance
-        </p>
+        <h1 className="text-xl font-bold">Ecommerce Analytics</h1>
+        <p className="text-sm">Overview of your store&apos;s performance</p>
       </header>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsWidget
