@@ -44,7 +44,7 @@ export function SidebarDemo() {
     },
   ];
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className={cn("flex h-screen flex-col border-r")}>
