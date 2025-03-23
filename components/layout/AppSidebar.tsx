@@ -24,7 +24,7 @@ export function SidebarDemo() {
   ];
 
   return (
-    <div className="flex h-screen flex-col border-r">
+    <div className="flex h-screen flex-col border-r border-gray-300 dark:border-gray-800">
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">

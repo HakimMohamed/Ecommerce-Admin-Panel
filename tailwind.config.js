@@ -1,7 +1,7 @@
 import { heroui } from "@heroui/theme"
 
-/** @type {import('tailwindcss').Config} */
-const config = {
+module.exports = {
+  darkMode: "class", // Make sure this is set to 'class'
   content: [
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
@@ -14,7 +14,8 @@ const config = {
           primary: "#007BFF",
           secondary: "#F3A712",
           background: "#F8F9FA",
-          text: "#212529"
+          text: "#212529",
+          border: "#D1D5DB"
         }
       },
       dark: {
@@ -22,13 +23,10 @@ const config = {
           primary: "#4A90E2",
           secondary: "#F3A712",
           background: "#121212",
-          text: "#EAEAEA"
+          text: "#EAEAEA",
+          border: "#2D2D2D"
         }
       },
     },
   })],
-
-
-}
-
-module.exports = config;
+};
