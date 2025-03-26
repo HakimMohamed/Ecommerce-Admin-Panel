@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { IconArrowLeft, IconSettings } from "@tabler/icons-react";
+import { IconArrowLeft } from "@tabler/icons-react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { SidebarBody, SidebarLink, Sidebar } from "../third-party/Sidebar";
-import { Activity, ListTree } from "lucide-react";
+import { Activity, ListTree, Package, Tag } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export function SidebarDemo() {
@@ -16,9 +16,19 @@ export function SidebarDemo() {
     { label: "Home", href: "/", icon: <Activity className="h-5 w-5" /> },
     { label: "Items", href: "/items", icon: <ListTree className="h-5 w-5" /> },
     {
-      label: "Settings",
-      href: "/settings",
-      icon: <IconSettings className="h-5 w-5" />,
+      label: "Orders",
+      href: "/orders",
+      icon: <Package className="h-5 w-5" />,
+    },
+    {
+      label: "Categories",
+      href: "/categories",
+      icon: <ListTree className="h-5 w-5" />,
+    },
+    {
+      label: "Tickets",
+      href: "/tickets",
+      icon: <Tag className="h-5 w-5" />,
     },
     { label: "Logout", href: "#", icon: <IconArrowLeft className="h-5 w-5" /> },
   ];

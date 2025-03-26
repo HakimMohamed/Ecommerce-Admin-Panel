@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button, Input, Link, Form, InputOtp, Spinner } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { AuthService } from "@/services/auth.service";
+import { login, verifyOtp } from "@/services/auth.service";
 
 export default function Component() {
   const [isVisible, setIsVisible] = useState(false);
@@ -31,7 +31,7 @@ export default function Component() {
 
     try {
       setLoading(true);
-      await AuthService.login(userEmail, password);
+      await login(userEmail, password);
       setEmail(userEmail);
       setIsOtpVisible(true);
       setError(null);
@@ -53,7 +53,7 @@ export default function Component() {
 
     try {
       setLoading(true);
-      const response = await AuthService.verifyOtp(email, otpValue);
+      const response = await verifyOtp(email, otpValue);
       const token = response.data.data;
 
       localStorage.setItem("token", token);
