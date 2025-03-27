@@ -1,4 +1,5 @@
 "use client";
+import { capitalize } from "@/lib/utils";
 import { getTickets } from "@/services/tickets.service";
 import { ITicket } from "@/types/tickets";
 import {
@@ -13,8 +14,14 @@ import {
   Chip,
   ChipProps,
   Input,
+  Dropdown,
+  DropdownTrigger,
+  Button,
+  DropdownMenu,
+  DropdownItem,
+  Selection,
 } from "@heroui/react";
-import { SearchIcon } from "lucide-react";
+import { ChevronDownIcon, SearchIcon } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 export default function Tickets() {
@@ -23,6 +30,7 @@ export default function Tickets() {
   const [isLoading, setIsLoading] = useState(false);
   const [tickets, setTickets] = useState<ITicket[]>([]);
   const [ticketsCount, setTicketsCount] = useState<number>(0);
+  const [statusFilter, setStatusFilter] = useState<Selection>("all");
 
   const pages = Math.ceil(ticketsCount / rowsPerPage);
 
@@ -30,9 +38,9 @@ export default function Tickets() {
     "open" | "in-progress" | "closed",
     ChipProps["color"]
   > = {
-    open: "success",
+    open: "danger",
     "in-progress": "warning",
-    closed: "danger",
+    closed: "success",
   };
   const [filterValue, setFilterValue] = useState("");
 
@@ -54,7 +62,13 @@ export default function Tickets() {
     const fetchTickets = async () => {
       try {
         setIsLoading(true);
-        const response = await getTickets(page, rowsPerPage, filterValue);
+        console.log(statusFilter);
+        const response = await getTickets(
+          page,
+          rowsPerPage,
+          filterValue,
+          statusFilter
+        );
         setTickets(response.data.data.tickets);
         setTicketsCount(response.data.data.count);
       } catch (error) {
@@ -65,19 +79,52 @@ export default function Tickets() {
     };
 
     fetchTickets();
-  }, [page, rowsPerPage, filterValue]);
+  }, [page, rowsPerPage, filterValue, statusFilter]);
+
+  const statusOptions = [
+    { name: "Open", uid: "open" },
+    { name: "In Progress", uid: "in-progress" },
+    { name: "Closed", uid: "closed" },
+  ];
 
   return (
     <div className="flex flex-col w-full gap-4">
-      <Input
-        isClearable
-        className="w-full sm:max-w-[44%]"
-        placeholder="Search by email..."
-        startContent={<SearchIcon />}
-        value={filterValue}
-        onClear={() => onClear()}
-        onValueChange={onSearchChange}
-      />
+      <div className="flex justify-between w-full gap-4">
+        <Input
+          isClearable
+          className="w-full sm:max-w-[44%]"
+          placeholder="Search by email..."
+          startContent={<SearchIcon />}
+          value={filterValue}
+          onClear={() => onClear()}
+          onValueChange={onSearchChange}
+        />
+        <Dropdown>
+          <DropdownTrigger className="hidden sm:flex">
+            <Button
+              endContent={<ChevronDownIcon className="text-small" />}
+              variant="flat"
+            >
+              Status
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            disallowEmptySelection
+            aria-label="Table Columns"
+            closeOnSelect={false}
+            selectedKeys={statusFilter}
+            selectionMode="multiple"
+            onSelectionChange={setStatusFilter}
+          >
+            {statusOptions.map((status) => (
+              <DropdownItem key={status.uid} className="capitalize">
+                {capitalize(status.name)}
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+        </Dropdown>
+      </div>
+
       <Table
         aria-label="Tickets Table"
         bottomContent={
