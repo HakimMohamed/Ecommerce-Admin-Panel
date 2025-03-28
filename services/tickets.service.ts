@@ -17,3 +17,10 @@ export const getTickets = async (
   }
   return api.get(`/api/tickets?${params.toString()}`);
 };
+
+export const updateTicketStatus = async (
+  id: string,
+  status: "open" | "in-progress" | "closed"
+): Promise<AxiosResponse> => {
+  return api.patch(`/api/tickets`, { ticketId: id, status });
+};
