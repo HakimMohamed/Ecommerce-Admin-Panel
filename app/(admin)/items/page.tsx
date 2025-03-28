@@ -1,5 +1,5 @@
 "use client";
-import { getItems } from "@/services/items.service";
+import { getItems, updateItems } from "@/services/items.service";
 import { IItem } from "@/types/item";
 import {
   Table,
@@ -11,8 +11,9 @@ import {
   Pagination,
   Spinner,
   Input,
+  Button,
 } from "@heroui/react";
-import { SearchIcon } from "lucide-react";
+import { Pencil, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 
@@ -21,7 +22,10 @@ export default function Items() {
   const rowsPerPage = 10;
   const [isLoading, setIsLoading] = useState(false);
   const [items, setItems] = useState<IItem[]>([]);
+  const [initialItems, setinitialItems] = useState<IItem[]>([]);
   const [itemsCount, setItemsCount] = useState<number>(0);
+  const [isEditing, setIsEditing] = useState(false);
+  const [refreshCounter, setRefreshCounter] = useState(0);
 
   const pages = Math.ceil(itemsCount / rowsPerPage);
 
@@ -46,8 +50,8 @@ export default function Items() {
       try {
         setIsLoading(true);
         const response = await getItems(page, rowsPerPage, filterValue);
-        console.log(response.data.data.items);
         setItems(response.data.data.items);
+        setinitialItems(response.data.data.items);
         setItemsCount(response.data.data.count);
       } catch (error) {
         console.error("Failed to fetch tickets:", error);
@@ -57,7 +61,58 @@ export default function Items() {
     };
 
     fetchItems();
-  }, [page, rowsPerPage, filterValue]);
+  }, [page, rowsPerPage, filterValue, refreshCounter]);
+
+  const [hasUpdates, setHasUpdates] = useState(false);
+
+  useEffect(() => {
+    const hasChanges = JSON.stringify(items) !== JSON.stringify(initialItems);
+    setHasUpdates(hasChanges);
+  }, [items]);
+
+  const onUpdateItem = (index: number, key: string, value: string) => {
+    setItems((prevItems) => {
+      const updatedItems = [...prevItems];
+      updatedItems[index] = { ...updatedItems[index], [key]: value };
+      console.log(updatedItems);
+      return updatedItems;
+    });
+  };
+
+  const saveChanges = async () => {
+    try {
+      const updatedItems = items
+        .map((item) => {
+          const initialItem = initialItems.find(
+            (initialItem) => item._id === initialItem._id
+          );
+
+          if (JSON.stringify(item) === JSON.stringify(initialItem)) return null;
+
+          const updatedItem = Object.entries(item).reduce(
+            (acc, [key, value]) => {
+              if (
+                key !== "_id" &&
+                value !== initialItem?.[key as keyof IItem]
+              ) {
+                acc[key] = value;
+              }
+              return acc;
+            },
+            { _id: item._id } as Record<string, unknown>
+          );
+          return Object.keys(updatedItem).length ? updatedItem : null;
+        })
+        .filter(Boolean) as unknown as IItem[];
+
+      await updateItems(updatedItems);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setRefreshCounter(refreshCounter + 1);
+      setIsEditing(false);
+    }
+  };
 
   return (
     <div className="flex flex-col w-full gap-4">
@@ -65,7 +120,7 @@ export default function Items() {
         <Input
           isClearable
           className="w-full sm:max-w-[44%]"
-          placeholder="Search by email..."
+          placeholder="Search by name..."
           startContent={<SearchIcon />}
           value={filterValue}
           onClear={() => onClear()}
@@ -76,9 +131,42 @@ export default function Items() {
       <Table
         aria-label="Tickets Table"
         topContent={
-          <span className="text-sm">
-            Showing {itemsCount ? itemsCount : 0} items
-          </span>
+          <div className="flex justify-between">
+            <span className="text-sm">
+              Showing {itemsCount ? itemsCount : 0} items
+            </span>
+            <div className="flex justify-center gap-2">
+              <Button
+                onPress={() => {
+                  setIsEditing((prev) => !prev);
+                  setItems(initialItems);
+                }}
+                isDisabled={!hasUpdates}
+              >
+                Cancel
+              </Button>
+              <Button
+                onPress={saveChanges}
+                isDisabled={!hasUpdates}
+                color="secondary"
+              >
+                Save Changes
+              </Button>
+              <Button
+                isIconOnly={true}
+                onPress={() => {
+                  if (isEditing) {
+                    // revert to inital items
+                    setItems(initialItems);
+                  }
+
+                  setIsEditing((prev) => !prev);
+                }}
+              >
+                <Pencil />
+              </Button>
+            </div>
+          </div>
         }
         bottomContent={
           <div className="flex w-full justify-center">
@@ -108,20 +196,77 @@ export default function Items() {
           isLoading={isLoading}
         >
           {items &&
-            items.map((item) => (
+            items.map((item, index) => (
               <TableRow key={item._id}>
                 <TableCell>
                   <Image
                     src={item.image}
                     alt={item.name}
-                    width={50}
-                    height={50}
+                    width={77}
+                    height={77}
                   />
                 </TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.description}</TableCell>
-                <TableCell>{item.category}</TableCell>
-                <TableCell>{item.price}</TableCell>
+                <TableCell>
+                  {isEditing ? (
+                    <Input
+                      className="w-full"
+                      value={item.name}
+                      onValueChange={(value) =>
+                        onUpdateItem(index, "name", value)
+                      }
+                    >
+                      {item.name}
+                    </Input>
+                  ) : (
+                    item.name
+                  )}
+                </TableCell>
+                <TableCell>
+                  {isEditing ? (
+                    <Input
+                      className="w-full"
+                      value={item.description}
+                      onValueChange={(value) =>
+                        onUpdateItem(index, "description", value)
+                      }
+                    >
+                      {item.description}
+                    </Input>
+                  ) : (
+                    item.description
+                  )}
+                </TableCell>
+                <TableCell>
+                  {isEditing ? (
+                    <Input
+                      className="w-full"
+                      value={item.category}
+                      onValueChange={(value) =>
+                        onUpdateItem(index, "category", value)
+                      }
+                    >
+                      {item.category}
+                    </Input>
+                  ) : (
+                    item.category
+                  )}
+                </TableCell>
+                <TableCell>
+                  {isEditing ? (
+                    <Input
+                      className="w-full"
+                      value={String(item.price)}
+                      type="number"
+                      onValueChange={(value) =>
+                        onUpdateItem(index, "price", value)
+                      }
+                    >
+                      {item.price}
+                    </Input>
+                  ) : (
+                    item.price
+                  )}
+                </TableCell>
                 <TableCell>
                   {item?.discount?.active
                     ? `${item.discount.value}%`
