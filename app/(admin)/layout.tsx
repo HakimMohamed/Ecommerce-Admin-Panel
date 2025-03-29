@@ -16,7 +16,10 @@ export default function DashboardLayout({
       <div className="flex flex-col flex-grow h-screen">
         <AppNavbar />
         <main className="flex-grow overflow-auto p-6 flex justify-center">
-          <div className="w-full max-w-7xl">{children}</div>
+          <div className="w-full max-w-7xl">
+            {children}
+            <div className="h-10" />
+          </div>
         </main>
       </div>
     </div>

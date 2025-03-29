@@ -172,7 +172,7 @@ export const SidebarLink = ({
       className={cn(
         "flex items-center gap-3 p-1 h-10 rounded-md transition-all",
         isActive
-          ? "bg-primary text-text dark:bg-background dark:text-secondary"
+          ? "text-secondary"
           : "hover:bg-gray-100 dark:hover:bg-gray-700",
 
         className
