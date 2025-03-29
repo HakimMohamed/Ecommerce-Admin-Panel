@@ -1,5 +1,6 @@
 "use client";
 import ImageModal from "@/components/ui/ImageModal";
+import ItemActions from "@/components/ui/ItemActions";
 import { getItems, updateItems } from "@/services/items.service";
 import { IItem } from "@/types/item";
 import {
@@ -14,6 +15,7 @@ import {
   Input,
   Button,
   useDisclosure,
+  addToast,
 } from "@heroui/react";
 import { Pencil, SearchIcon } from "lucide-react";
 import Image from "next/image";
@@ -109,8 +111,22 @@ export default function Items() {
         .filter(Boolean) as unknown as IItem[];
 
       await updateItems(updatedItems);
+      addToast({
+        title: "Items updated",
+        description: "Items have been updated successfully",
+        color: "success",
+        timeout: 5000,
+        shouldShowTimeoutProgress: true,
+      });
     } catch (error) {
       console.log(error);
+      addToast({
+        title: "Failed to update items",
+        description: "An error occurred while updating items",
+        color: "danger",
+        timeout: 5000,
+        shouldShowTimeoutProgress: true,
+      });
     } finally {
       setRefreshCounter(refreshCounter + 1);
       setIsEditing(false);
@@ -184,15 +200,20 @@ export default function Items() {
         }
         bottomContent={
           <div className="flex w-full justify-center">
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color="secondary"
-              page={page}
-              total={pages}
-              onChange={(page) => setPage(page)}
-            />
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <Pagination
+                isCompact
+                showControls
+                showShadow
+                color="secondary"
+                page={page}
+                initialPage={1}
+                total={pages}
+                onChange={(page) => setPage(page)}
+              />
+            )}
           </div>
         }
       >
@@ -203,6 +224,7 @@ export default function Items() {
           <TableColumn>CATEGORY</TableColumn>
           <TableColumn>PRICE</TableColumn>
           <TableColumn>DISCOUNT</TableColumn>
+          <TableColumn>ACTIONS</TableColumn>
         </TableHeader>
         <TableBody
           items={items ?? []}
@@ -285,6 +307,12 @@ export default function Items() {
                   {item?.discount?.active
                     ? `${item.discount.value}%`
                     : "No Discount"}
+                </TableCell>
+                <TableCell>
+                  <ItemActions
+                    item={item}
+                    setRefreshCounter={setRefreshCounter}
+                  />
                 </TableCell>
               </TableRow>
             ))}

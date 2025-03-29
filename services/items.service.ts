@@ -20,3 +20,7 @@ export const updateItems = async (
 ): Promise<AxiosResponse> => {
   return api.patch(`/api/items`, updatedItems);
 };
+
+export const deleteItem = async (itemId: string): Promise<AxiosResponse> => {
+  return api.delete(`/api/items?itemId=${itemId}`);
+};

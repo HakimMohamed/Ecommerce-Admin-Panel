@@ -159,15 +159,20 @@ export default function Tickets() {
         aria-label="Tickets Table"
         bottomContent={
           <div className="flex w-full justify-center">
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color="secondary"
-              page={page}
-              total={pages}
-              onChange={(page) => setPage(page)}
-            />
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <Pagination
+                isCompact
+                showControls
+                showShadow
+                color="secondary"
+                initialPage={1}
+                page={page}
+                total={pages}
+                onChange={(page) => setPage(page)}
+              />
+            )}
           </div>
         }
       >
