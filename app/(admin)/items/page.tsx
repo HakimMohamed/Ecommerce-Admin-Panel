@@ -1,4 +1,5 @@
 "use client";
+import ImageModal from "@/components/ui/ImageModal";
 import { getItems, updateItems } from "@/services/items.service";
 import { IItem } from "@/types/item";
 import {
@@ -12,6 +13,7 @@ import {
   Spinner,
   Input,
   Button,
+  useDisclosure,
 } from "@heroui/react";
 import { Pencil, SearchIcon } from "lucide-react";
 import Image from "next/image";
@@ -26,6 +28,7 @@ export default function Items() {
   const [itemsCount, setItemsCount] = useState<number>(0);
   const [isEditing, setIsEditing] = useState(false);
   const [refreshCounter, setRefreshCounter] = useState(0);
+  const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
   const pages = Math.ceil(itemsCount / rowsPerPage);
 
@@ -114,6 +117,17 @@ export default function Items() {
     }
   };
 
+  const handleOpen = (item: IItem) => {
+    setSelectedItem(item);
+    onImageModalOpen();
+  };
+
+  const {
+    isOpen: isImageModalOpen,
+    onOpen: onImageModalOpen,
+    onClose: onImageModalClose,
+  } = useDisclosure();
+
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="flex justify-between w-full gap-4">
@@ -198,7 +212,7 @@ export default function Items() {
           {items &&
             items.map((item, index) => (
               <TableRow key={item._id}>
-                <TableCell>
+                <TableCell onClick={() => handleOpen(item)}>
                   <Image
                     src={item.image}
                     alt={item.name}
@@ -276,6 +290,12 @@ export default function Items() {
             ))}
         </TableBody>
       </Table>
+
+      <ImageModal
+        selectedItem={selectedItem}
+        isOpen={isImageModalOpen}
+        onClose={onImageModalClose}
+      />
     </div>
   );
 }
