@@ -1,4 +1,5 @@
 "use client";
+import CreateItemModal from "@/components/ui/CreateItemModal";
 import ImageModal from "@/components/ui/ImageModal";
 import ItemActions from "@/components/ui/ItemActions";
 import { getItems, updateItems } from "@/services/items.service";
@@ -144,6 +145,11 @@ export default function Items() {
     onClose: onImageModalClose,
   } = useDisclosure();
 
+  const {
+    isOpen: isCreateItemModalOpen,
+    onOpen: onOpenCreateItemModal,
+    onClose: onCloseCreateItemModal,
+  } = useDisclosure();
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="flex justify-between w-full gap-4">
@@ -182,6 +188,9 @@ export default function Items() {
               >
                 Save Changes
               </Button>
+              <Button onPress={onOpenCreateItemModal} color="primary">
+                New Item
+              </Button>
               <Button
                 isIconOnly={true}
                 onPress={() => {
@@ -201,7 +210,7 @@ export default function Items() {
         bottomContent={
           <div className="flex w-full justify-center">
             {isLoading ? (
-              <Spinner />
+              <p>calculating...</p>
             ) : (
               <Pagination
                 isCompact
@@ -312,13 +321,20 @@ export default function Items() {
                   <ItemActions
                     item={item}
                     setRefreshCounter={setRefreshCounter}
+                    isCreateItemModalOpen={isCreateItemModalOpen}
+                    onOpenCreateItemModal={onOpenCreateItemModal}
+                    onCloseCreateItemModal={onCloseCreateItemModal}
                   />
                 </TableCell>
               </TableRow>
             ))}
         </TableBody>
       </Table>
-
+      <CreateItemModal
+        isOpen={isCreateItemModalOpen}
+        onCloseCreateItemModal={onCloseCreateItemModal}
+        setRefreshCounter={setRefreshCounter}
+      />
       <ImageModal
         selectedItem={selectedItem}
         isOpen={isImageModalOpen}

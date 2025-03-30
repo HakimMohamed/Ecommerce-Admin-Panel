@@ -160,7 +160,7 @@ export default function Tickets() {
         bottomContent={
           <div className="flex w-full justify-center">
             {isLoading ? (
-              <Spinner />
+              <p>calculating...</p>
             ) : (
               <Pagination
                 isCompact

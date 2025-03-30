@@ -24,6 +24,9 @@ const ItemActions = ({
 }: {
   item: IItem;
   setRefreshCounter: React.Dispatch<React.SetStateAction<number>>;
+  isCreateItemModalOpen: boolean;
+  onOpenCreateItemModal: () => void;
+  onCloseCreateItemModal: () => void;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -62,12 +65,6 @@ const ItemActions = ({
           <DropdownMenu>
             <DropdownItem key="open" color="danger" onPress={onOpen}>
               Delete
-            </DropdownItem>
-            <DropdownItem key="in-progress" color="warning">
-              Update Ticket To In Progress
-            </DropdownItem>
-            <DropdownItem key="closed" color="primary">
-              Update Ticket To Closed
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>

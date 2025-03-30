@@ -24,3 +24,7 @@ export const updateItems = async (
 export const deleteItem = async (itemId: string): Promise<AxiosResponse> => {
   return api.delete(`/api/items?itemId=${itemId}`);
 };
+
+export const addItem = async (newItem: IItem): Promise<AxiosResponse> => {
+  return api.post(`/api/items`, newItem);
+};
