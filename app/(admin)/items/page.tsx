@@ -2,6 +2,7 @@
 import CreateItemModal from "@/components/ui/CreateItemModal";
 import ImageModal from "@/components/ui/ImageModal";
 import ItemActions from "@/components/ui/ItemActions";
+import { uploadImage } from "@/services/cdn.service";
 import { getItems, updateItems } from "@/services/items.service";
 import { IItem } from "@/types/item";
 import {
@@ -254,14 +255,51 @@ export default function Items() {
           {items &&
             items.map((item, index) => (
               <TableRow key={item._id}>
-                <TableCell onClick={() => handleOpen(item)}>
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={77}
-                    height={77}
-                  />
+                <TableCell>
+                  {isEditing ? (
+                    <div className="flex flex-col items-start">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        width={77}
+                        height={77}
+                        className="mb-2 rounded"
+                      />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+
+                          try {
+                            const imageUrl = await uploadImage(file);
+                            onUpdateItem(index, "image", imageUrl);
+                          } catch (err) {
+                            console.error("Image upload failed", err);
+                            addToast({
+                              title: "Image Upload Failed",
+                              description:
+                                "An error occurred while uploading the image.",
+                              color: "danger",
+                              timeout: 4000,
+                            });
+                          }
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={77}
+                      height={77}
+                      className="rounded"
+                      onClick={() => handleOpen(item)}
+                    />
+                  )}
                 </TableCell>
+
                 <TableCell>
                   {isEditing ? (
                     <Input
