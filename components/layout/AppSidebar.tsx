@@ -5,7 +5,13 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { SidebarBody, SidebarLink, Sidebar } from "../third-party/Sidebar";
-import { Activity, ListTree, Package, Tag } from "lucide-react";
+import {
+  Activity,
+  BadgeIndianRupee,
+  ListTree,
+  Package,
+  Tag,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export function SidebarDemo() {
@@ -29,6 +35,11 @@ export function SidebarDemo() {
       label: "Tickets",
       href: "/tickets",
       icon: <Tag className="h-5 w-5" />,
+    },
+    {
+      label: "Banner Settings",
+      href: "/banner",
+      icon: <BadgeIndianRupee className="h-5 w-5" />,
     },
     { label: "Logout", href: "#", icon: <IconArrowLeft className="h-5 w-5" /> },
   ];
