@@ -80,9 +80,8 @@ function CreateItemModal({
 
   function isValidUrl(image: string): boolean {
     try {
-      //   const url = new URL(image);
-      //   return url.protocol === "http:" || url.protocol === "https:";
-      return image.startsWith("/");
+      const url = new URL(image);
+      return url.protocol === "http:" || url.protocol === "https:";
     } catch {
       return false;
     }
