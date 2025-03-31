@@ -241,6 +241,7 @@ export default function Items() {
         <TableHeader>
           <TableColumn>IMAGE</TableColumn>
           <TableColumn>NAME</TableColumn>
+          <TableColumn>ACTIVE</TableColumn>
           <TableColumn>DESCRIPTION</TableColumn>
           <TableColumn>CATEGORY</TableColumn>
           <TableColumn>PRICE</TableColumn>
@@ -315,6 +316,21 @@ export default function Items() {
                     item.name
                   )}
                 </TableCell>
+                <TableCell>
+                  {isEditing ? (
+                    <Checkbox
+                      isSelected={item.active}
+                      onValueChange={(value) =>
+                        onUpdateItem(index, "active", value)
+                      }
+                    />
+                  ) : item.active ? (
+                    "Yes"
+                  ) : (
+                    "No"
+                  )}
+                </TableCell>
+
                 <TableCell>
                   {isEditing ? (
                     <Input

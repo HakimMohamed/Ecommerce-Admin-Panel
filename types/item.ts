@@ -9,4 +9,5 @@ export interface IItem extends Document {
     active: boolean;
     value: number;
   };
+  active: boolean;
 }
