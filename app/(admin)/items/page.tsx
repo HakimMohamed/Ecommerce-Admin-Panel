@@ -17,6 +17,7 @@ import {
   Button,
   useDisclosure,
   addToast,
+  Checkbox,
 } from "@heroui/react";
 import { Pencil, SearchIcon } from "lucide-react";
 import Image from "next/image";
@@ -76,11 +77,21 @@ export default function Items() {
     setHasUpdates(hasChanges);
   }, [items]);
 
-  const onUpdateItem = (index: number, key: string, value: string) => {
+  const onUpdateItem = (index: number, key: string, value: any) => {
     setItems((prevItems) => {
       const updatedItems = [...prevItems];
-      updatedItems[index] = { ...updatedItems[index], [key]: value };
-      console.log(updatedItems);
+      const keys = key.split(".");
+      const updatedItem = { ...updatedItems[index] };
+
+      let current: any = updatedItem;
+      for (let i = 0; i < keys.length - 1; i++) {
+        current[keys[i]] = { ...current[keys[i]] };
+        current = current[keys[i]];
+      }
+
+      current[keys[keys.length - 1]] = value;
+      updatedItems[index] = updatedItem;
+
       return updatedItems;
     });
   };
@@ -313,10 +324,30 @@ export default function Items() {
                   )}
                 </TableCell>
                 <TableCell>
-                  {item?.discount?.active
-                    ? `${item.discount.value}%`
-                    : "No Discount"}
+                  {isEditing ? (
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        isSelected={item?.discount?.active}
+                        onValueChange={(value) =>
+                          onUpdateItem(index, "discount.active", value)
+                        }
+                      />
+                      <Input
+                        className="w-full"
+                        type="number"
+                        value={String(item?.discount?.value ?? 0)}
+                        onValueChange={(value) =>
+                          onUpdateItem(index, "discount.value", Number(value))
+                        }
+                      />
+                    </div>
+                  ) : item?.discount?.active ? (
+                    `${item.discount.value}%`
+                  ) : (
+                    "No Discount"
+                  )}
                 </TableCell>
+
                 <TableCell>
                   <ItemActions
                     item={item}
