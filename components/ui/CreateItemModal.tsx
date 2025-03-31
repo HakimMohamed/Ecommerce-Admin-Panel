@@ -1,3 +1,4 @@
+import { uploadImage } from "@/services/cdn.service";
 import { addItem } from "@/services/items.service";
 import { IItem } from "@/types/item";
 import {
@@ -33,6 +34,7 @@ function CreateItemModal({
   const [discount, setDiscount] = useState("");
   const [image, setImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const onSubmit = async (newItem: any) => {
     setIsLoading(true);
     try {
@@ -185,12 +187,31 @@ function CreateItemModal({
                   </div>
 
                   <div className="space-y-2">
-                    <p className="text-sm font-medium">Image URL</p>
-                    <Input
-                      placeholder="Enter image URL"
-                      value={image}
-                      onChange={(e) => setImage(e.target.value)}
-                      variant="bordered"
+                    <p className="text-sm font-medium">Image*</p>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+
+                        setIsLoading(true);
+                        try {
+                          const uploadedUrl = await uploadImage(file);
+                          setImage(uploadedUrl);
+                        } catch (err) {
+                          console.error("Image upload failed", err);
+                          addToast({
+                            title: "Image Upload Failed",
+                            description:
+                              "Could not upload image. Please try again.",
+                            color: "danger",
+                            timeout: 5000,
+                          });
+                        } finally {
+                          setIsLoading(false);
+                        }
+                      }}
                       className="w-full"
                     />
 
