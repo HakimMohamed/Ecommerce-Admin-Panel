@@ -34,6 +34,7 @@ function CreateItemModal({
   const [discount, setDiscount] = useState("");
   const [image, setImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [active, setActive] = useState(true);
 
   const onSubmit = async (newItem: any) => {
     setIsLoading(true);
@@ -74,7 +75,9 @@ function CreateItemModal({
         active: discountEnabled,
       },
       image: image || "",
+      active,
     };
+
     onSubmit(newItem);
   }
 
@@ -183,6 +186,12 @@ function CreateItemModal({
                         className="w-full"
                       />
                     )}
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Checkbox isSelected={active} onValueChange={setActive} />
+                      <p className="text-sm font-medium">Active</p>
+                    </div>
                   </div>
 
                   <div className="space-y-2">
