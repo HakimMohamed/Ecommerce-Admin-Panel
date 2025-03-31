@@ -7,10 +7,12 @@ export const getBannerSettings = async (): Promise<AxiosResponse> => {
 
 export const updateBannerSettings = async (
   bannerText: string,
-  bannerColor: string
+  bannerColor: string,
+  textColor: string
 ): Promise<AxiosResponse> => {
   return api.patch(`/api/banner-settings`, {
     text: bannerText,
     color: bannerColor,
+    textColor,
   });
 };

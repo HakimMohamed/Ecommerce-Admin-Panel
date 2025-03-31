@@ -10,18 +10,19 @@ import { addToast, Card } from "@heroui/react";
 import React, { useState, useEffect } from "react";
 
 const BannerEditor = () => {
-  const [bannerText, setBannerText] = useState("Loading...");
-  const [bannerColor, setBannerColor] = useState("#7b42f5");
+  const [bannerText, setBannerText] = useState("");
+  const [bannerColor, setBannerColor] = useState("");
+  const [textColor, setTextColor] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  const getTextColor = (hexColor: string) => {
-    const r = parseInt(hexColor.slice(1, 3), 16);
-    const g = parseInt(hexColor.slice(3, 5), 16);
-    const b = parseInt(hexColor.slice(5, 7), 16);
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return luminance > 0.5 ? "#000000" : "#ffffff";
-  };
+  // const getTextColor = (hexColor: string) => {
+  //   const r = parseInt(hexColor.slice(1, 3), 16);
+  //   const g = parseInt(hexColor.slice(3, 5), 16);
+  //   const b = parseInt(hexColor.slice(5, 7), 16);
+  //   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  //   return luminance > 0.5 ? "#000000" : "#ffffff";
+  // };
 
   const colorOptions = [
     { color: "#7b42f5", name: "Purple" },
@@ -41,6 +42,7 @@ const BannerEditor = () => {
         const res = await getBannerSettings();
         setBannerText(res.data.data.text);
         setBannerColor(res.data.data.color);
+        setTextColor(res.data.data.textColor);
       } catch (error) {
         console.error("Failed to fetch settings", error);
       } finally {
@@ -55,7 +57,7 @@ const BannerEditor = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await updateBannerSettings(bannerText, bannerColor);
+      await updateBannerSettings(bannerText, bannerColor, textColor);
       addToast({
         title: "Settings saved",
         description: "Settings have been saved successfully",
@@ -91,7 +93,7 @@ const BannerEditor = () => {
             textAlign: "center",
             fontWeight: "bold",
             backgroundColor: bannerColor,
-            color: getTextColor(bannerColor),
+            color: textColor,
             transition: "background-color 0.3s, color 0.3s",
             marginBottom: "2rem",
             borderRadius: "4px",
@@ -153,7 +155,7 @@ const BannerEditor = () => {
             >
               Choose Custom Color:
             </label>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 mb-4">
               <input
                 type="color"
                 id="colorPicker"
@@ -172,7 +174,28 @@ const BannerEditor = () => {
                 className="w-32 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="#7b42f5"
               />
-              <span className="text-sm text-gray-500">Current color code</span>
+              <span className="text-sm text-gray-500">Background Color</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <input
+                type="color"
+                id="colorPicker"
+                value={textColor}
+                onChange={(e) => setTextColor(e.target.value)}
+                className="h-10 w-10 rounded cursor-pointer"
+              />
+              <input
+                type="text"
+                value={textColor}
+                onChange={(e) => {
+                  if (/^#([0-9A-F]{3}){1,2}$/i.test(e.target.value)) {
+                    setTextColor(e.target.value);
+                  }
+                }}
+                className="w-32 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="#7b42f5"
+              />
+              <span className="text-sm text-gray-500">Text Color</span>
             </div>
           </div>
 
