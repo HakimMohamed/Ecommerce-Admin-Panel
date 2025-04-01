@@ -7,10 +7,10 @@ import Image from "next/image";
 import { SidebarBody, SidebarLink, Sidebar } from "../third-party/Sidebar";
 import {
   Activity,
-  BadgeIndianRupee,
+  LifeBuoy,
   ListTree,
   Package,
-  Tag,
+  SettingsIcon,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -27,19 +27,14 @@ export function SidebarDemo() {
       icon: <Package className="h-5 w-5" />,
     },
     {
-      label: "Categories",
-      href: "/categories",
-      icon: <ListTree className="h-5 w-5" />,
-    },
-    {
-      label: "Tickets",
-      href: "/tickets",
-      icon: <Tag className="h-5 w-5" />,
+      label: "Support",
+      href: "/support",
+      icon: <LifeBuoy className="h-5 w-5" />,
     },
     {
       label: "Banner Settings",
       href: "/banner",
-      icon: <BadgeIndianRupee className="h-5 w-5" />,
+      icon: <SettingsIcon className="h-5 w-5" />,
     },
     { label: "Logout", href: "#", icon: <IconArrowLeft className="h-5 w-5" /> },
   ];

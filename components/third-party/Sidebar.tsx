@@ -182,7 +182,7 @@ export const SidebarLink = ({
       <div className="flex-shrink-0">{link.icon}</div>
 
       <div
-        className="overflow-hidden transition-all duration-300"
+        className="overflow-hidden transition-all duration-300 whitespace-nowrap"
         style={{ maxWidth: open ? "200px" : "0px", opacity: open ? 1 : 0 }}
       >
         {link.label}
