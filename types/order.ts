@@ -3,7 +3,10 @@ export interface IOrder {
   orderId: string;
   user: {
     _id: string;
-    name: string;
+    name: {
+      first: string;
+      last: string;
+    };
     email: string;
   };
   items: {

@@ -204,7 +204,9 @@ export default function Orders() {
                   <span className="text-sm">{order.orderId || "1234"}</span>
                 </Tooltip>
               </TableCell>
-              <TableCell>{order.user?.name}</TableCell>
+              <TableCell>
+                {order.user?.name.first + " " + order.user?.name.last}
+              </TableCell>
               <TableCell>{order.user?.email}</TableCell>
               <TableCell>
                 <Chip
