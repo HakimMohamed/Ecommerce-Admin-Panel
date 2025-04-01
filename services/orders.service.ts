@@ -19,5 +19,5 @@ export const updateOrderStatus = async (
   orderId: string,
   newStatus: IOrder["status"]
 ): Promise<AxiosResponse> => {
-  return api.patch(`/api/orders`, { orderId, newStatus });
+  return api.patch(`/api/orders`, { orderId, status: newStatus });
 };

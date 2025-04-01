@@ -43,8 +43,8 @@ export default function Orders() {
     ChipProps["color"]
   > = {
     pending: "warning",
-    active: "success",
-    delivered: "primary",
+    active: "primary",
+    delivered: "success",
     cancelled: "danger",
   };
   const [filterValue, setFilterValue] = useState("");
@@ -165,7 +165,7 @@ export default function Orders() {
         bottomContent={
           <div className="flex w-full justify-center">
             {isLoading ? (
-              <p>Calculating...</p>
+              <p className="mt-4">Calculating...</p>
             ) : (
               <Pagination
                 isCompact
