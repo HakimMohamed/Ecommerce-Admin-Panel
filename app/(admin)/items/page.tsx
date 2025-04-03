@@ -19,6 +19,7 @@ import {
   useDisclosure,
   addToast,
   Checkbox,
+  Alert, // Imported Alert component
 } from "@heroui/react";
 import { Pencil, SearchIcon } from "lucide-react";
 import Image from "next/image";
@@ -36,8 +37,11 @@ export default function Items() {
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
   const [hasUpdates, setHasUpdates] = useState(false);
 
-  const pages = Math.ceil(itemsCount / rowsPerPage);
+  // State to handle symmetry alert message for image uploads
+  const [symmetryAlert, setSymmetryAlert] = useState<string | null>(null);
+  const [alertItemId, setAlertItemId] = useState<string | null>(null);
 
+  const pages = Math.ceil(itemsCount / rowsPerPage);
   const [filterValue, setFilterValue] = useState("");
 
   const onSearchChange = useCallback((value?: string) => {
@@ -71,7 +75,6 @@ export default function Items() {
 
     fetchItems();
   }, [page, rowsPerPage, filterValue, refreshCounter]);
-
 
   useEffect(() => {
     const hasChanges = JSON.stringify(items) !== JSON.stringify(initialItems);
@@ -162,6 +165,7 @@ export default function Items() {
     onOpen: onOpenCreateItemModal,
     onClose: onCloseCreateItemModal,
   } = useDisclosure();
+
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="flex justify-between w-full gap-4">
@@ -207,10 +211,9 @@ export default function Items() {
                 isIconOnly={true}
                 onPress={() => {
                   if (isEditing) {
-                    // revert to inital items
+                    // revert to initial items
                     setItems(initialItems);
                   }
-
                   setIsEditing((prev) => !prev);
                 }}
               >
@@ -273,21 +276,64 @@ export default function Items() {
                           const file = e.target.files?.[0];
                           if (!file) return;
 
-                          try {
-                            const imageUrl = await uploadImage(file);
-                            onUpdateItem(index, "image", imageUrl);
-                          } catch (err) {
-                            console.error("Image upload failed", err);
+                          const img = new window.Image();
+                          const objectUrl = URL.createObjectURL(file);
+                          img.src = objectUrl;
+
+                          img.onload = async () => {
+                            console.log(
+                              "Image loaded:",
+                              img.naturalWidth,
+                              img.naturalHeight
+                            );
+                            if (img.naturalWidth !== img.naturalHeight) {
+                              setSymmetryAlert(
+                                "Image might look bad and affect other items. Center focused images with symmetrical dimensions is better."
+                              );
+                              setAlertItemId(item._id);
+                            } else {
+                              // Clear the alert if previously set for this item
+                              if (alertItemId === item._id) {
+                                setSymmetryAlert(null);
+                                setAlertItemId(null);
+                              }
+                            }
+                            URL.revokeObjectURL(objectUrl); // Clean up the created object URL
+                            try {
+                              const imageUrl = await uploadImage(file);
+                              onUpdateItem(index, "image", imageUrl);
+                            } catch (err) {
+                              console.error("Image upload failed", err);
+                              addToast({
+                                title: "Image Upload Failed",
+                                description:
+                                  "An error occurred while uploading the image.",
+                                color: "danger",
+                                timeout: 4000,
+                              });
+                            }
+                          };
+
+                          img.onerror = (error) => {
+                            console.error(
+                              "Failed to load image for dimension check:",
+                              error
+                            );
                             addToast({
-                              title: "Image Upload Failed",
+                              title: "Image Load Failed",
                               description:
-                                "An error occurred while uploading the image.",
+                                "The selected image could not be loaded. Please try another image.",
                               color: "danger",
                               timeout: 4000,
                             });
-                          }
+                          };
                         }}
                       />
+                      {alertItemId === item._id && symmetryAlert && (
+                        <Alert color="warning" title="Warning Alert">
+                          {symmetryAlert}
+                        </Alert>
+                      )}
                     </div>
                   ) : (
                     <Image

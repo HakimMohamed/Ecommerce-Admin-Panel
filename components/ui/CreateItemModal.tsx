@@ -13,6 +13,7 @@ import {
   Checkbox,
   Divider,
   addToast,
+  Alert,
 } from "@heroui/react";
 import Image from "next/image";
 import { useState } from "react";
@@ -35,6 +36,9 @@ function CreateItemModal({
   const [image, setImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [active, setActive] = useState(true);
+
+  // State for symmetry alert message
+  const [symmetryAlert, setSymmetryAlert] = useState<string | null>(null);
 
   const onSubmit = async (newItem: any) => {
     setIsLoading(true);
@@ -96,7 +100,7 @@ function CreateItemModal({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              <h2 className="text-xl font-semibold ">Add New Item</h2>
+              <h2 className="text-xl font-semibold">Add New Item</h2>
             </ModalHeader>
             <form onSubmit={handleSubmit}>
               <ModalBody>
@@ -203,22 +207,47 @@ function CreateItemModal({
                         const file = e.target.files?.[0];
                         if (!file) return;
 
-                        setIsLoading(true);
-                        try {
-                          const uploadedUrl = await uploadImage(file);
-                          setImage(uploadedUrl);
-                        } catch (err) {
-                          console.error("Image upload failed", err);
+                        const img = new window.Image();
+                        const objectUrl = URL.createObjectURL(file);
+                        img.src = objectUrl;
+
+                        img.onload = async () => {
+                          if (img.naturalWidth !== img.naturalHeight) {
+                            setSymmetryAlert(
+                              "Image might look bad and affect other items. Center focused images with symmetrical dimensions is better."
+                            );
+                          } else {
+                            setSymmetryAlert(null);
+                          }
+                          URL.revokeObjectURL(objectUrl);
+                          setIsLoading(true);
+                          try {
+                            const uploadedUrl = await uploadImage(file);
+                            setImage(uploadedUrl);
+                          } catch (err) {
+                            console.error("Image upload failed", err);
+                            addToast({
+                              title: "Image Upload Failed",
+                              description:
+                                "Could not upload image. Please try again.",
+                              color: "danger",
+                              timeout: 5000,
+                            });
+                          } finally {
+                            setIsLoading(false);
+                          }
+                        };
+
+                        img.onerror = (error) => {
+                          console.error("Error loading image", error);
                           addToast({
-                            title: "Image Upload Failed",
+                            title: "Image Load Error",
                             description:
-                              "Could not upload image. Please try again.",
+                              "Failed to load image. Please select another image.",
                             color: "danger",
                             timeout: 5000,
                           });
-                        } finally {
-                          setIsLoading(false);
-                        }
+                        };
                       }}
                       className="w-full"
                     />
@@ -239,6 +268,12 @@ function CreateItemModal({
                       <p className="mt-2 text-red-600 text-sm">
                         Please enter a valid image URL
                       </p>
+                    )}
+
+                    {symmetryAlert && (
+                      <Alert color="warning" title="Warning Alert">
+                        {symmetryAlert}
+                      </Alert>
                     )}
                   </div>
                 </div>
