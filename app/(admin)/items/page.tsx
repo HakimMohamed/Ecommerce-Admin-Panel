@@ -34,6 +34,7 @@ export default function Items() {
   const [isEditing, setIsEditing] = useState(false);
   const [refreshCounter, setRefreshCounter] = useState(0);
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
+  const [hasUpdates, setHasUpdates] = useState(false);
 
   const pages = Math.ceil(itemsCount / rowsPerPage);
 
@@ -71,7 +72,6 @@ export default function Items() {
     fetchItems();
   }, [page, rowsPerPage, filterValue, refreshCounter]);
 
-  const [hasUpdates, setHasUpdates] = useState(false);
 
   useEffect(() => {
     const hasChanges = JSON.stringify(items) !== JSON.stringify(initialItems);

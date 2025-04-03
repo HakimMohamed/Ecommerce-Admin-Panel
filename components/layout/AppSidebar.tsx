@@ -7,6 +7,7 @@ import Image from "next/image";
 import { SidebarBody, SidebarLink, Sidebar } from "../third-party/Sidebar";
 import {
   Activity,
+  Grid2X2,
   LifeBuoy,
   ListTree,
   Package,
@@ -21,6 +22,11 @@ export function SidebarDemo() {
   const links = [
     { label: "Home", href: "/", icon: <Activity className="h-5 w-5" /> },
     { label: "Items", href: "/items", icon: <ListTree className="h-5 w-5" /> },
+    {
+      label: "Categories",
+      href: "/categories",
+      icon: <Grid2X2 className="h-5 w-5" />,
+    },
     {
       label: "Orders",
       href: "/orders",

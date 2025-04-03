@@ -1,3 +1,4 @@
+import { ICategory } from "@/types/category";
 import { IItem } from "@/types/item";
 import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/react";
 import Image from "next/image";
@@ -8,7 +9,7 @@ const ImageModal = ({
   isOpen,
   onClose,
 }: {
-  selectedItem: IItem | null;
+  selectedItem: IItem | ICategory | null;
   isOpen: boolean;
   onClose: () => void;
 }) => {
