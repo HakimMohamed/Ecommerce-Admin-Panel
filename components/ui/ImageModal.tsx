@@ -1,7 +1,12 @@
 import { ICategory } from "@/types/category";
 import { IItem } from "@/types/item";
-import { Modal, ModalBody, ModalContent, ModalHeader } from "@heroui/react";
-import Image from "next/image";
+import {
+  Image,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+} from "@heroui/react";
 import React from "react";
 
 const ImageModal = ({
@@ -14,7 +19,7 @@ const ImageModal = ({
   onClose: () => void;
 }) => {
   return (
-    <Modal isOpen={isOpen} size="md" onClose={onClose}>
+    <Modal isOpen={isOpen} size="lg" onClose={onClose}>
       <ModalContent>
         {() => (
           <>
